@@ -8,7 +8,7 @@
             <img src="<?=$this->getIcon()?>">
         </div>
         <div class="weather-status">
-            <span id="weather-status">Clear</span>
+            <span id="weather-status"><?=$this->getTwoDayForecast()?></span>
         </div>
         <div class="precipitation-icon">
 

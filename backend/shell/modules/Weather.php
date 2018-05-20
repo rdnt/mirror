@@ -120,4 +120,25 @@ trait Weather {
             }
         }
     }
+
+
+    function getTwoDayForecast() {
+        if (file_exists($this->getRoot() . "/data/weather/forecast.json")) {
+            $forecast = file_get_contents($this->getRoot() . "/data/weather/forecast.json");
+            $forecast = json_decode($forecast, true);
+
+            $today = $forecast['forecast']['simpleforecast']['forecastday'][0]['conditions'];
+            $tomorrow = $forecast['forecast']['simpleforecast']['forecastday'][1]['conditions'];
+
+            if ($today == $tomorrow) {
+                return $today . " tonight and tomorrow morning";
+            }
+            else {
+                return $today . " tonight and " . $tomorrow . " tomorrow morning";
+            }
+        }
+        else {
+            return "Error";
+        }
+    }
 }

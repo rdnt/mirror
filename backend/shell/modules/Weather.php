@@ -11,12 +11,18 @@ trait Weather {
             // Set the API backend to send the requests to
             $api = "https://api.wunderground.com/api/$api_key";
             // Make the necessary requests
-            $conditions = file_get_contents("$api/conditions/q/$location.json");
+            $conditions = file_get_contents("$api/conditions/astronomy/q/$location.json");
             $forecast = file_get_contents("$api/forecast/q/$location.json");
             // Save the data
             file_put_contents($data . "weather/conditions.json", $conditions);
             file_put_contents($data . "weather/forecast.json", $forecast);
             $this->response("SUCCESS");
+        }
+        else if ($this->getKey()) {
+            $this->response("LOCATION_MISSING");
+        }
+        else if ($this->getLocation()) {
+            $this->response("KEY_MISSING");
         }
         else {
             $this->response("UPDATE_ERROR");
@@ -51,7 +57,10 @@ trait Weather {
             else {
                 $temp = $conditions['current_observation']['temp_f'];
             }
-            return $temp;
+            return $temp . "°";
+        }
+        else {
+            return "ERR";
         }
     }
 
@@ -64,6 +73,51 @@ trait Weather {
     function getKey() {
         if (file_exists($this->getRoot() . "/data/key")) {
             return file_get_contents($this->getRoot() . "/data/key");
+        }
+    }
+
+    function getIcon() {
+        if ($this->isItDay()) {
+            $state = "day";
+        }
+        else {
+            $state = "night";
+        }
+        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
+            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions.json");
+            $conditions = json_decode($conditions, true);
+            return "/images/weather/$state/" . $conditions['current_observation']['icon'] . ".png";
+        }
+        else {
+            return "/images/weather/$state/error.png";
+        }
+    }
+
+    function isItDay() {
+
+        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
+            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions.json");
+            $conditions = json_decode($conditions, true);
+            $sunrise_hour = $conditions['sun_phase']['sunrise']['hour'];
+            $sunrise_minute = $conditions['sun_phase']['sunrise']['minute'];
+
+            $sunrise = sprintf("%02d%02d", $sunrise_hour, $sunrise_minute);
+
+            $sunset_hour = $conditions['sun_phase']['sunset']['hour'];
+            $sunset_minute = $conditions['sun_phase']['sunset']['minute'];
+
+            $sunset = sprintf("%02d%02d", $sunset_hour, $sunset_minute);
+
+            $date = date("Hi");
+
+            if ($date > $sunrise and $date <= $sunset) {
+                return true;
+            }
+        }
+        else {
+            if ($date > 0700 and $date <= 1800) {
+                return true;
+            }
         }
     }
 }

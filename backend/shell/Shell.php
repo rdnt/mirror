@@ -9,6 +9,8 @@ class Mirror extends Core {
     protected $celsius;
     // Shell constructor method
     function __construct(){
+
+        date_default_timezone_set("Europe/Athens");
         $this->name = "SHT";
         $this->title_separator = "-";
         $this->patterns = array();

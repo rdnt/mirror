@@ -45,13 +45,14 @@ month[11] = "December";
 
 function update() {
     var d = new Date();
-    time.innerHTML = d.getHours() + ":" + d.getMinutes();
+    time.innerHTML = ("0"+d.getHours()).slice(-2) + ":" + ("0"+d.getMinutes()).slice(-2);
     date.innerHTML = day[d.getDay()] + "<br>" + month[d.getMonth()] + " " + d.getDate();
 }
 
-update();
+//update();
 window.setInterval(function(){
     update();
+    console.log("updated");
 
 
 

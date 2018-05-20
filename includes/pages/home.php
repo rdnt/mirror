@@ -2,9 +2,10 @@
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
-            <span id="temperature"><?=$this->getTemperature();?>°</span>
+            <span id="temperature"><?=$this->getTemperature();?></span>
         </div>
         <div class="weather-icon">
+            <img src="<?=$this->getIcon()?>">
         </div>
         <div class="weather-status">
             <span id="weather-status">Clear</span>
@@ -18,10 +19,10 @@
     </div>
     <div class="segment two">
         <div class="time">
-            <span id="time"></span>
+            <span id="time"><?=date("H:i")?></span>
         </div>
         <div class="date">
-            <span id="date"></span>
+            <span id="date"><?=date("l") . "<br>" . date("F d")?></span>
         </div>
         <div class="location-icon">
 

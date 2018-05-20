@@ -1,15 +1,15 @@
 <?php
 
-class Shell extends Core {
+class Mirror extends Core {
     // Include the components
     use AssetPushing;
     use FormHandling;
     use Github;
-    use Logging;
-    use Login;
+    //use Logging;
+    //use Login;
     // Shell constructor method
     function __construct(){
-        $this->name = "Core";
+        $this->name = "SHT";
         $this->title_separator = "-";
         $this->patterns = array();
         $this->data_paths = array(
@@ -17,7 +17,7 @@ class Shell extends Core {
             "/data/logs/"
         );
         $this->pages = array(
-            "/" => ["Home", "home", "default"]
+            "/" => ["Mirror", "home", "default"]
         );
         $this->assets = array();
         parent::__construct();
@@ -26,4 +26,4 @@ class Shell extends Core {
     }
 }
 // Initialize Shell object
-$shell = new Shell;
+$mirror = new Mirror;

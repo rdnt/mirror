@@ -4,10 +4,10 @@ trait Weather {
     // Updates the weather from the wUnderground API
     function updateWeather() {
         $data = $this->getRoot() . "/data/";
-        if (getKey() and getLocation()) {
+        if ($this->getKey() and $this->getLocation()) {
             // Prepare the query
-            $api_key = getKey();
-            $location = urlencode(getLocation());
+            $api_key = $this->getKey();
+            $location = urlencode($this->getLocation());
             // Set the API backend to send the requests to
             $api = "https://api.wunderground.com/api/$api_key";
             // Make the necessary requests

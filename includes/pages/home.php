@@ -2,7 +2,7 @@
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
-            <span id="temperature"><?=$this->getTemperature();?></span>
+            <span id="temperature"><?=$this->getTemperature()?></span>
         </div>
         <div class="weather-icon">
             <img src="<?=$this->getIcon()?>">
@@ -14,7 +14,7 @@
 
         </div>
         <div class="precipitation">
-            <span id="precipitation">30%</span>
+            <span id="precipitation"><?=$this->getHumidity()?></span>
         </div>
     </div>
     <div class="segment two">

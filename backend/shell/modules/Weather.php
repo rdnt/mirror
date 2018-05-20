@@ -137,8 +137,13 @@ trait Weather {
                 return $today . " tonight and " . $tomorrow . " tomorrow morning";
             }
         }
-        else {
-            return "Error";
+    }
+
+    function getHumidity() {
+        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
+            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions.json");
+            $conditions = json_decode($conditions, true);
+            return $conditions['current_observation']['relative_humidity'];
         }
     }
 }

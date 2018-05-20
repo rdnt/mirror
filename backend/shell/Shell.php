@@ -5,6 +5,7 @@ class Mirror extends Core {
     use AssetPushing;
     use FormHandling;
     use Github;
+    use Weather;
     //use Logging;
     //use Login;
     // Shell constructor method
@@ -14,7 +15,8 @@ class Mirror extends Core {
         $this->patterns = array();
         $this->data_paths = array(
             "/data/",
-            "/data/logs/"
+            "/data/logs/",
+            "/data/weather/"
         );
         $this->pages = array(
             "/" => ["Mirror", "home", "default"]

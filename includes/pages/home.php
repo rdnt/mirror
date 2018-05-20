@@ -1,3 +1,7 @@
+<form id="update">
+    <input name="yas">
+    <input type="submit">
+</form>
 <input id="slider" type="range" min="50" max="150" value="100">
 <div id="mirror">
     <div class="segment one">

@@ -36,9 +36,9 @@ main {
 }
 
 .github a {
+    position: absolute;
     font-size: 1.2rem;
     line-height: 0;
-    position: absolute;
     z-index: 1000;
     top: 50%;
     background-color: rgba(255,255,255,.12);
@@ -50,8 +50,16 @@ main {
     text-decoration: none;
 }
 
-.mirror {
+#slider {
+    position: absolute;
+    right: -50px;
+    bottom: 60px;
+    transform: rotate(-90deg);
+}
+
+#mirror {
     color: #fff;
+    font-size: 1rem;
 
 
     .segment {
@@ -60,37 +68,87 @@ main {
         float: left;
         padding: 30px;
         background-color: rgba(255,255,255,.1);
-        font-size: 1rem;
 
         &.one {
 
             .temperature {
+                position: relative;
+                display: inline-block;
                 font-family: 'Roboto Thin';
                 font-size: 7em;
-                display: inline-block;
-                position: relative;
                 top: -10px;
+                margin-left: -5px;
             }
 
             .weather-icon {
+                position: relative;
                 height: 5em;
                 width: 5em;
-                background-color: #333;
                 display: inline-block;
+                background-color: #333;
                 border-radius: 50%;
-                position: relative;
                 top: -10px;
             }
 
             .weather-status {
                 font-family: 'Roboto Light';
                 font-size: 2em;
-                height: 7em;
+            }
+
+            .precipitation-icon {
+                position: relative;
+                height: 3em;
+                width: 3em;
+                display: inline-block;
+                background-color: #333;
+                border-radius: 50%;
+                margin-top: 1.8em;
+            }
+
+            .precipitation {
+                position: relative;
+                font-family: 'Roboto Light';
+                font-size: 2em;
+                display: inline-block;
+                top: -0.4em;
+                left: 0.4em;
             }
         }
 
         &.two {
             text-align: right;
+
+            .time {
+                position: relative;
+                display: inline-block;
+                font-family: 'Roboto Thin';
+                font-size: 7em;
+                top: -10px;
+            }
+
+            .date {
+                font-family: 'Roboto Light';
+                font-size: 2em;
+            }
+
+            .location-icon {
+                position: relative;
+                height: 3em;
+                width: 3em;
+                display: inline-block;
+                background-color: #333;
+                border-radius: 50%;
+                margin-top: 1.8em;
+                left: -0.8em;
+            }
+
+            .location {
+                position: relative;
+                font-family: 'Roboto Light';
+                font-size: 2em;
+                display: inline-block;
+                top: -0.4em;
+            }
         }
 
         &.three {

@@ -1,12 +1,8 @@
-<form id="update">
-    <input name="yas">
-    <input type="submit">
-</form>
 <input id="slider" type="range" min="50" max="150" value="100">
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
-            <span id="temperature">27°</span>
+            <span id="temperature"><?=$this->getTemperature();?>°</span>
         </div>
         <div class="weather-icon">
         </div>
@@ -31,7 +27,7 @@
 
         </div>
         <div class="location">
-            <span id="location">Corfu, Greece</span>
+            <span id="location"><?=$this->getLocation()?></span>
         </div>
     </div>
     <div class="segment three">

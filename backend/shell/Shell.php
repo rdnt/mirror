@@ -6,8 +6,7 @@ class Mirror extends Core {
     use FormHandling;
     use Github;
     use Weather;
-    //use Logging;
-    //use Login;
+    protected $celsius;
     // Shell constructor method
     function __construct(){
         $this->name = "SHT";
@@ -22,6 +21,7 @@ class Mirror extends Core {
             "/" => ["Mirror", "home", "default"]
         );
         $this->assets = array();
+        $this->celsius = true;
         parent::__construct();
         $this->createDataPaths();
         $this->renderPage();

@@ -11,7 +11,7 @@
             <span id="weather-status"><?=$this->getTwoDayForecast()?></span>
         </div>
         <div class="precipitation-icon">
-
+            <img src="/images/precipitation.png">
         </div>
         <div class="precipitation">
             <span id="precipitation"><?=$this->getHumidity()?></span>

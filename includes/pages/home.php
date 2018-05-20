@@ -25,7 +25,7 @@
             <span id="date"><?=date("l") . "<br>" . date("F d")?></span>
         </div>
         <div class="location-icon">
-
+            <img src="/images/location.png">
         </div>
         <div class="location">
             <span id="location"><?=$this->getLocation()?></span>

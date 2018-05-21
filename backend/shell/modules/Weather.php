@@ -29,9 +29,36 @@ trait Weather {
         }
     }
 
+    function map() {
+        $data = $this->getRoot() . "/data/";
+        if ($this->getKey() and $this->getLocation()) {
+            // Prepare the query
+            $api_key = "";
+            $location = urlencode($this->getLocation());
+            // Set the API backend to send the requests to
+            //$api = "https://api.wunderground.com/api/$api_key";
+            // Make the necessary requests
+            $conditions = file_get_contents("https://api.openweathermap.org/data/2.5/weather?lat=39.6214567&lon=19.920196&APPID=XXX");
+            //$forecast = file_get_contents("$api/forecast/q/$location.json");
+            // Save the data
+            file_put_contents($data . "weather/conditions2.json", $conditions);
+            //file_put_contents($data . "weather/forecast2.json", $forecast);
+            $this->response("SUCCESS");
+        }
+        else if ($this->getKey()) {
+            $this->response("LOCATION_MISSING");
+        }
+        else if ($this->getLocation()) {
+            $this->response("KEY_MISSING");
+        }
+        else {
+            $this->response("UPDATE_ERROR");
+        }
+    }
+
     function getWeatherConditions() {
-        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
-            $this->response("SUCCESS", file_get_contents($this->getRoot() . "/data/weather/conditions.json"));
+        if (file_exists($this->getRoot() . "/data/weather/conditions2.json")) {
+            $this->response("SUCCESS", file_get_contents($this->getRoot() . "/data/weather/conditions2.json"));
         }
         else {
             $this->response("CONDITIONS_DO_NOT_EXIST");
@@ -48,14 +75,15 @@ trait Weather {
     }
 
     function getTemperature() {
-        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
-            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions.json");
+        if (file_exists($this->getRoot() . "/data/weather/conditions2.json")) {
+            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions2.json");
             $conditions = json_decode($conditions, true);
             if ($this->celsius) {
-                $temp = $conditions['current_observation']['temp_c'];
+                $temp = $conditions['main']['temp'] - 273.15;
             }
             else {
-                $temp = $conditions['current_observation']['temp_f'];
+                $temp = $conditions['main']['temp'] * 9/5 - 459.67;
+
             }
             return $temp . "°";
         }
@@ -77,19 +105,13 @@ trait Weather {
     }
 
     function getIcon() {
-        if ($this->isItDay()) {
-            $state = "day";
-        }
-        else {
-            $state = "night";
-        }
-        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
-            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions.json");
+        if (file_exists($this->getRoot() . "/data/weather/conditions2.json")) {
+            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions2.json");
             $conditions = json_decode($conditions, true);
-            return "/images/weather/$state/" . $conditions['current_observation']['icon'] . ".png";
+            return "/images/weather/" . $conditions['weather'][0]['icon'] . ".png";
         }
         else {
-            return "/images/weather/$state/error.png";
+            return "/images/weather/error.png";
         }
     }
 

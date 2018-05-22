@@ -13,6 +13,10 @@ $(window).on("load", function() {
         $("#mirror").addClass("cursor-less");
     }, 1000);
 
+    window.onmousemove = function(e){
+        $("#mirror").removeClass("cursor-less");
+    }
+
 });
 
 function init() {}

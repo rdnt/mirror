@@ -58,7 +58,8 @@ trait Weather {
                 "day2" => $this->calculateWeather(1, $forecast),
                 "sunrise" => $conditions['sys']['sunrise'],
                 "sunset" => $conditions['sys']['sunset'],
-                "celsious" => $this->celsius
+                "celsious" => $this->celsius,
+                "last-checked" => date("U")
             );
             // Save the data
             $this->saveFile($data, "/data/weather/conditions.json", true);

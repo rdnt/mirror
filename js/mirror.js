@@ -7,7 +7,7 @@ $(window).on("load", function() {
 
     window.setInterval(function(){
         $("#refresh-btn").click();
-    }, 300000);
+    }, 60000);
 });
 
 $("#slider").oninput = function() {

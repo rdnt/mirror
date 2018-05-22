@@ -5,9 +5,6 @@ if ($last_checked + 300 < $date) {
     $this->updateWeather();
 }
 ?>
-<form id="refresh" style="position: absolute;z-index: 1000;">
-    <input id="refresh-btn" type="submit">
-</form>
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
@@ -49,3 +46,6 @@ if ($last_checked + 300 < $date) {
         </div>
     </div>
 </div>
+<form id="refresh">
+    <input id="refresh-btn" type="submit" hidden>
+</form>

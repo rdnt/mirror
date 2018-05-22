@@ -64,4 +64,3 @@ function asyncFormSubmission(form_id, target_url = null, init, callback, min_del
         }
     });
 }
-function emptyIC(){}

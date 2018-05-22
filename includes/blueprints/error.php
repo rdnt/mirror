@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <?php require_once $_SERVER['DOCUMENT_ROOT']."/includes/components/head.php"; ?>
-<title><?=$this->getPageTitle(); ?></title>
+<title><?=$this->getPageTitle()?></title>
 </head>
 <body>
 <?php require_once $_SERVER['DOCUMENT_ROOT']."/includes/components/nav.php"; ?>

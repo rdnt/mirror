@@ -1,5 +1,4 @@
 <?php
-
 class Mirror extends Core {
     // Include the components
     use AssetPushing;
@@ -13,7 +12,6 @@ class Mirror extends Core {
     private $weather;
     // Shell constructor method
     function __construct(){
-
         date_default_timezone_set("Europe/Athens");
         $this->name = "SHT";
         $this->title_separator = "-";
@@ -42,8 +40,6 @@ class Mirror extends Core {
         $this->loadWeather();
         $this->renderPage();
     }
-
-
 }
 // Initialize Shell object
 $mirror = new Mirror;

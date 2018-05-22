@@ -2,7 +2,7 @@
 $date = intval(date("U"));
 $last_checked = $this->getWeather()['last-checked'];
 if ($last_checked + 300 < $date) {
-    $this->updateWeather();
+    $this->weather = $this->updateWeather();
 }
 ?>
 <div id="mirror">

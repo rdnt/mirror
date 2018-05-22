@@ -11,11 +11,11 @@ $(window).on("load", function() {
 
     window.setTimeout(function(){
         $("#mirror").addClass("cursor-less");
+        window.onmousemove = function(e){
+            $("#mirror").removeClass("cursor-less");
+            window.close();
+        }
     }, 1000);
-
-    window.onmousemove = function(e){
-        $("#mirror").removeClass("cursor-less");
-    }
 
 });
 

@@ -7,7 +7,10 @@ class Mirror extends Core {
     use Github;
     use Weather;
     use FileProcessing;
-    protected $celsius;
+    // Weather-specific datamembers
+    private $celsius;
+    private $severity;
+    private $weather;
     // Shell constructor method
     function __construct(){
 
@@ -25,10 +28,22 @@ class Mirror extends Core {
         );
         $this->assets = array();
         $this->celsius = true;
+        $this->severity = array(
+            2 => 6, // 2XX: storm
+            3 => 4, // 3XX: drizzle
+            5 => 5, // 5XX: rain
+            6 => 7, // 6XX: snow
+            7 => 3, // 7XX: fog
+            8 => 1, // 8XX: clouds
+            0 => 2  // 800: clear
+        );
         parent::__construct();
         $this->createDataPaths();
+        $this->loadWeather();
         $this->renderPage();
     }
+
+
 }
 // Initialize Shell object
 $mirror = new Mirror;

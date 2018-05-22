@@ -1,157 +1,146 @@
 <?php
 // Trait that handles weather updating and viewing
 trait Weather {
+    // Get location
+    function getLocation() {
+        return $this->weather['location'];
+    }
+    // Get temperature in the format specified
+    function getTemperature() {
+        if ($this->celsius) {
+            $temperature = $this->weather['temperature'] - 273.15;
+        }
+        else {
+            $temperature = $this->weather['temperature'] * 9/5 - 459.67;
+        }
+        return $temperature . "°";
+    }
+    // Get himidity
+    function getHumidity() {
+        return $this->weather['humidity'] . "%";
+    }
+    // Load the API key, coordinates and weather conditions
+    function loadWeather() {
+        if ($this->fileExists("/data/weather/conditions.json")) {
+            $this->weather = $this->readFile("/data/weather/conditions.json", true);
+        }
+        if ($this->fileExists("/data/key")) {
+            $this->key = $this->readFile("/data/key");
+        }
+        if ($this->fileExists("/data/coords")) {
+            $this->coords = $this->readFile("/data/coords");
+        }
+        if ($this->fileExists("/data/coords")) {
+            $coords = $this->getRoot() . "/data/coords";
+            $coords = file($coords);
+            $this->lat = trim($coords[0]);
+            $this->lon = trim($coords[1]);
+        }
+    }
     // Updates the weather from the OpenWeatherMap API
     function updateWeather() {
-        if ($this->getKey() and $this->getCoords()) {
+        if ($this->fileExists("/data/key")) {
+            $this->key = $this->readFile("/data/key");
+        }
+        if ($this->fileExists("/data/key") and $this->fileExists("/data/coords")) {
             // Prepare the query
-            $api_key = $this->getKey();
-            $coords = $this->getCoords();
+            $api_key = $this->readFile("/data/key");
+
+            $coords = $this->getRoot() . "/data/coords";
+            $coords = file($coords);
+
+            $lat = trim($coords[0]);
+            $lon = trim($coords[1]);
             // Set the API backend to send the requests to
-            $api = "https://api.openweathermap.org/data/2.5/weather";
+            $current = "https://api.openweathermap.org/data/2.5/weather";
+            $fivedays = "https://api.openweathermap.org/data/2.5/forecast";
             // Make the necessary requests
-            $conditions = file_get_contents("$api?$coords&APPID=$api_key");
+            $conditions = file_get_contents("$current?lat=$lat&lon=$lon&APPID=$api_key");
+            $forecast = file_get_contents("$fivedays?lat=$lat&lon=$lon&APPID=$api_key");
+            // Decode parsed weather data
             $conditions = json_decode($conditions, true);
+            $forecast = json_decode($forecast, true);
             // Prepare the data
             $data = array(
                 "temperature" => $conditions['main']['temp'],
                 "icon" => $conditions['weather'][0]['icon'],
                 "location" => $conditions['name'] . ", " . $conditions['sys']['country'],
-                "humidity" => $conditions['main']['humidity']
+                "humidity" => $conditions['main']['humidity'],
+                "day1" => $this->calculateWeather(0, $forecast),
+                "day2" => $this->calculateWeather(1, $forecast),
+                "sunrise" => $conditions['sys']['sunrise'],
+                "sunset" => $conditions['sys']['sunset']
             );
             // Save the data
             $this->saveFile($data, "/data/weather/conditions.json", true);
-            $this->saveFile($conditions, "/data/weather/api.json", true);
             $this->response("SUCCESS");
         }
-        else if ($this->getKey()) {
-            $this->response("LOCATION_MISSING");
+        else if ($this->key) {
+            $this->response("MISSING_COORDINATES");
         }
-        else if ($this->getCoords()) {
-            $this->response("KEY_MISSING");
-        }
-        else {
-            $this->response("UPDATE_ERROR");
-        }
-    }
-
-    function getLocation() {
-        if ($this->fileExists("/data/weather/conditions.json")) {
-            $conditions = $this->readFile("/data/weather/conditions.json", true);
-            return $conditions['location'];
-        }
-    }
-
-    function getWeatherConditions() {
-        if (file_exists($this->getRoot() . "/data/weather/conditions2.json")) {
-            $this->response("SUCCESS", file_get_contents($this->getRoot() . "/data/weather/conditions2.json"));
+        else if ($this->coords) {
+            $this->response("MISSING_API_KEY");
         }
         else {
-            $this->response("CONDITIONS_DO_NOT_EXIST");
+            $this->response("MISSING_REQUIRED_DATA");
         }
     }
-
-    function getWeatherForecast() {
-        if (file_exists($this->getRoot() . "/data/weather/forecast.json")) {
-            $this->response("SUCCESS", file_get_contents($this->getRoot() . "/data/weather/forecast.json"));
-        }
-        else {
-            $this->response("FORECAST_DOES_NOT_EXIST");
-        }
-    }
-
-    function getTemperature() {
-        if ($this->fileExists("/data/weather/conditions.json")) {
-            $conditions = $this->readFile("/data/weather/conditions.json", true);
-            if ($this->celsius) {
-                $temperature = $conditions['temperature'] - 273.15;
+    // Calculate the worst weather for a specific day
+    function calculateWeather($day = 0, $data) {
+        // Calculate remaining measurements for this day
+        $offset = (24 - intval(date("H")))/3%8;
+        // Get the remaining today's measurements and the 8 of the next day
+        $days[0] = array_slice($data['list'], 0, $offset);
+        $days[1] = array_slice($data['list'], $offset, 8);
+        // Initialize arrays
+        $ids = array();
+        $names = array();
+        // Loop all the measurements to find the conditions
+        foreach ($days[$day] as $current) {
+            // Calculate severity
+            $id = $current['weather'][0]['id'];
+            if ($id == 800) {
+                $ids[] = $this->severity[0];
             }
             else {
-                $temperature = $conditions['temperature'] * 9/5 - 459.67;
+                $ids[] = $this->severity[intval($id/100)];
             }
-            return $temperature . "°";
+            $names[] = $current['weather'][0]['description'];
         }
-        else {
-            return "ERR";
-        }
+        // Return worst conditions
+        $max = array_keys($ids, max($ids));
+        return $names[$max[0]];
     }
-
-    function getCoords() {
-        if (file_exists($this->getRoot() . "/data/coords")) {
-            $coords = $this->getRoot() . "/data/coords";
-            $coords = file($coords);
-            $lat = trim($coords[0]);
-            $lon = trim($coords[1]);
-            return "lat=$lat&lon=$lon";
-        }
-    }
-
-    function getKey() {
-        if (file_exists($this->getRoot() . "/data/key")) {
-            return trim(file_get_contents($this->getRoot() . "/data/key"));
-        }
-    }
-
+    // Return the appropriate icon based on the time
     function getIcon() {
+        return "/images/weather/" . $this->weather['icon'] . ".png";
+    }
+    // Figure out if it's day or night (may be needed)
+    function isItDay() {
+        // Get sunrise and sunset unix times
+        $sunrise = $this->weather['sunrise'];
+        $sunset = $this->weather['sunset'];
+        // Get current unix time
+        $date = date("U");
+        // If date matches period when the sun is up, it's day
+        if ($date > $sunrise and $date <= $sunset) {
+            return true;
+        }
+    }
+    // Return today's and tomorrow's forecast in human-readable form
+    function getTwoDayForecast() {
         if ($this->fileExists("/data/weather/conditions.json")) {
             $conditions = $this->readFile("/data/weather/conditions.json", true);
-            return "/images/weather/" . $conditions['icon'] . ".png";
-        }
-        else {
-            return "/images/weather/error.png";
-        }
-    }
-
-    function isItDay() {
-
-        if (file_exists($this->getRoot() . "/data/weather/conditions.json")) {
-            $conditions = file_get_contents($this->getRoot() . "/data/weather/conditions.json");
-            $conditions = json_decode($conditions, true);
-            $sunrise_hour = $conditions['sun_phase']['sunrise']['hour'];
-            $sunrise_minute = $conditions['sun_phase']['sunrise']['minute'];
-
-            $sunrise = sprintf("%02d%02d", $sunrise_hour, $sunrise_minute);
-
-            $sunset_hour = $conditions['sun_phase']['sunset']['hour'];
-            $sunset_minute = $conditions['sun_phase']['sunset']['minute'];
-
-            $sunset = sprintf("%02d%02d", $sunset_hour, $sunset_minute);
-
-            $date = date("Hi");
-
-            if ($date > $sunrise and $date <= $sunset) {
-                return true;
-            }
-        }
-        else {
-            if ($date > 0700 and $date <= 1800) {
-                return true;
-            }
-        }
-    }
-
-
-    function getTwoDayForecast() {
-        if (file_exists($this->getRoot() . "/data/weather/forecast.json")) {
-            $forecast = file_get_contents($this->getRoot() . "/data/weather/forecast.json");
-            $forecast = json_decode($forecast, true);
-
-            $today = $forecast['forecast']['simpleforecast']['forecastday'][0]['conditions'];
-            $tomorrow = $forecast['forecast']['simpleforecast']['forecastday'][1]['conditions'];
-
+            // Make the first word capital
+            $today = ucfirst($conditions['day1']);
+            $tomorrow = $conditions['day2'];
+            // No reason to report differently if they're the same
             if ($today == $tomorrow) {
                 return $today . " tonight and tomorrow morning";
             }
             else {
                 return $today . " tonight and " . $tomorrow . " tomorrow morning";
             }
-        }
-    }
-
-    function getHumidity() {
-        if ($this->fileExists("/data/weather/conditions.json")) {
-            $conditions = $this->readFile("/data/weather/conditions.json", true);
-            return $conditions['humidity'] . "%";
         }
     }
 }

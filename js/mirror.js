@@ -8,6 +8,11 @@ $(window).on("load", function() {
     window.setInterval(function(){
         $("#refresh-btn").click();
     }, 60000);
+
+    window.setTimeout(function(){
+        $("#mirror").addClass("cursor-less");
+    }, 1000);
+
 });
 
 function init() {}

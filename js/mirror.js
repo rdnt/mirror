@@ -1,6 +1,6 @@
 $(window).on("load", function() {
     pass = true;
-    asyncFormSubmission("#refresh", "/backend/refresh", emptyIC, refreshWeatherData, 0, 0);
+    asyncFormSubmission("#refresh", "/backend/refresh", init, refreshWeatherData, 0, 0);
     window.setInterval(function(){
         updateTimeAndDate();
     }, 1000);
@@ -9,6 +9,8 @@ $(window).on("load", function() {
         $("#refresh-btn").click();
     }, 60000);
 });
+
+function init() {}
 
 function ucfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

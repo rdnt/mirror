@@ -7,7 +7,7 @@ $(window).on("load", function() {
 
     window.setInterval(function(){
         $("#refresh-btn").click();
-    }, 60000);
+    }, 6000);
 });
 
 function ucfirst(string) {

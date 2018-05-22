@@ -40,9 +40,10 @@ main {
     font-size: 1.2rem;
     line-height: 0;
     z-index: 1000;
-    margin: 0;
+    margin: auto;
     bottom: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%);
     padding: 0 8px;
     color: #bbb !important;
     text-decoration: none;
@@ -164,6 +165,15 @@ main {
         &.four {
             animation: 300s shift-right linear infinite;
             text-align: right;
+
+            .last-updated {
+                position: absolute;
+                bottom: 1.2em;
+                right: 1.2em;
+                width: 100%;
+                font-family: 'Roboto Light';
+                font-size: 1.6em;
+            }
         }
     }
 

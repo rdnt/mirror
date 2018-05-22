@@ -1,4 +1,11 @@
-<form id="refresh">
+<?php
+$date = intval(date("U"));
+$last_checked = $this->getWeather()['last-checked'];
+if ($last_checked + 300 < $date) {
+    $this->updateWeather();
+}
+?>
+<form id="refresh" style="position: absolute;z-index: 1000;">
     <input id="refresh-btn" type="submit">
 </form>
 <div id="mirror">

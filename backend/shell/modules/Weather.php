@@ -1,11 +1,14 @@
 <?php
 // Trait that handles weather updating and viewing
 trait Weather {
+    // Get weather
+    function getWeather() {
+        return $this->weather;
+    }
     // Get location
     function getLocation() {
         return $this->weather['location'];
     }
-
     function lastUpdated() {
         $seconds = date("U") - $this->weather['last-checked'];
         $minutes = intval($seconds/60);

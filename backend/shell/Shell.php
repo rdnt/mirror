@@ -6,6 +6,7 @@ class Mirror extends Core {
     use FormHandling;
     use Github;
     use Weather;
+    use FileProcessing;
     protected $celsius;
     // Shell constructor method
     function __construct(){

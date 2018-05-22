@@ -67,6 +67,7 @@ main {
         padding: 30px;
 
         &.one {
+            animation: 60s shift-left linear infinite;
 
             .temperature {
                 position: relative;
@@ -122,6 +123,7 @@ main {
         }
 
         &.two {
+            animation: 60s shift-right linear infinite;
             text-align: right;
 
             .time {
@@ -163,11 +165,49 @@ main {
         }
 
         &.three {
+            animation: 60s shift-left linear infinite;
 
         }
 
         &.four {
+            animation: 60s shift-right linear infinite;
             text-align: right;
+        }
+    }
+
+    @keyframes shift-left {
+        0% {
+            transform: translate(0);
+        }
+        25% {
+            transform: translate(10px, 10px);
+        }
+        50% {
+            transform: translate(0);
+        }
+        75% {
+            transform: translate(-10px, -10px);
+        }
+        100% {
+            transform: translate(0);
+        }
+    }
+
+    @keyframes shift-right {
+        0% {
+            transform: translate(0);
+        }
+        25% {
+            transform: translate(-10px, 10px);
+        }
+        50% {
+            transform: translate(0);
+        }
+        75% {
+            transform: translate(10px, -10px);
+        }
+        100% {
+            transform: translate(0);
         }
     }
 }

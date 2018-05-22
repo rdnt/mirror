@@ -1,23 +1,52 @@
 $(window).on("load", function() {
-    asyncFormSubmission("#update", "https://api.wunderground.com/api/0bf2659b77990290/conditions/q/GR/Kerkyra.json", potato, potato, 500, 1200);
+    pass = true;
+    asyncFormSubmission("#refresh", "/backend/refresh", emptyIC, refreshWeatherData, 0, 0);
+    window.setInterval(function(){
+        updateTimeAndDate();
+    }, 1000);
 
-
-
+    window.setInterval(function(){
+        $("#refresh-btn").click();
+    }, 300000);
 });
 
-
-var slider = document.getElementById("slider");
-var mirror = document.getElementById("mirror");
-
-var time = document.getElementById("time");
-var date = document.getElementById("date");
-
-function potato(data) {
-    console.log(data);
+$("#slider").oninput = function() {
+    $("#mirror").style.setProperty("font-size", (this.value/100) + "em");
 }
 
-slider.oninput = function() {
-    mirror.style.setProperty("font-size", (this.value/100) + "em");
+function ucfirst(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function refreshWeatherData(data) {
+    console.log(data);
+    if (data['response'] === "SUCCESS") {
+        $("#location").html(data['data']['location']);
+        $("#weather-icon").attr("src", "/images/weather/" + data['data']['icon'] + ".png");
+        $("#temperature").html(data['data']['temperature']);
+
+        var temp;
+        if (data['data']['celsious']) {
+            temp = data['data']['temperature']  - 273.15;
+        }
+        else {
+            temp = data['data']['temperature'] * 9/5 - 459.67;
+        }
+        $("#temperature").html(temp + "°");
+
+        var today = data['data']['day1'];
+        var tomorrow = data['data']['day2'];
+        var phrase;
+        if (today == tomorrow) {
+            phrase = ucfirst(today) + " tonight and tomorrow morning";
+        }
+        else {
+            phrase = ucfirst(today) + " tonight and " + tomorrow + " tomorrow morning";
+        }
+        $("#weather-status").html(phrase);
+        $("#precipitation").html(data['data']['humidity'] + "%");
+    }
+
 }
 
 var day = new Array(7);
@@ -43,37 +72,8 @@ month[9] = "October";
 month[10] = "November";
 month[11] = "December";
 
-function update() {
-    var d = new Date();
-    time.innerHTML = ("0"+d.getHours()).slice(-2) + ":" + ("0"+d.getMinutes()).slice(-2);
-    date.innerHTML = day[d.getDay()] + "<br>" + month[d.getMonth()] + " " + d.getDate();
+function updateTimeAndDate() {
+    var date = new Date();
+    $("#time").html(("0"+date.getHours()).slice(-2) + ":" + ("0"+date.getMinutes()).slice(-2));
+    $("#date").html(day[date.getDay()] + "<br>" + month[date.getMonth()] + " " + date.getDate());
 }
-
-//update();
-window.setInterval(function(){
-    update();
-    console.log("updated");
-
-
-
-}, 1000);
-/*
-$.ajax({
-                url: "https://api.wunderground.com/api/0bf2659b77990290/conditions/q/GR/Kerkyra.json",
-                dataType: 'jsonp',
-                success: function(results) {
-                    //console.log(results);
-                    console.log(results);
-                    var temp = results.current_observation.temp_c;
-                    document.getElementById("temp").innerHTML = temp + '°';
-                    var date = new Date();
-                    var hour = date.getHours();
-                    var icon = results.current_observation.icon;
-                    if (hour > 6 && hour < 21) {
-                        document.getElementById("icon").src = '/weather/day/' + icon + '.png';
-                    } else {
-                        document.getElementById("icon").src = '/weather/night/' + icon + '.png';
-                    }
-                }
-            });
-*/

@@ -24,18 +24,6 @@ trait Weather {
         if ($this->fileExists("/data/weather/conditions.json")) {
             $this->weather = $this->readFile("/data/weather/conditions.json", true);
         }
-        if ($this->fileExists("/data/key")) {
-            $this->key = $this->readFile("/data/key");
-        }
-        if ($this->fileExists("/data/coords")) {
-            $this->coords = $this->readFile("/data/coords");
-        }
-        if ($this->fileExists("/data/coords")) {
-            $coords = $this->getRoot() . "/data/coords";
-            $coords = file($coords);
-            $this->lat = trim($coords[0]);
-            $this->lon = trim($coords[1]);
-        }
     }
     // Updates the weather from the OpenWeatherMap API
     function updateWeather() {
@@ -69,7 +57,8 @@ trait Weather {
                 "day1" => $this->calculateWeather(0, $forecast),
                 "day2" => $this->calculateWeather(1, $forecast),
                 "sunrise" => $conditions['sys']['sunrise'],
-                "sunset" => $conditions['sys']['sunset']
+                "sunset" => $conditions['sys']['sunset'],
+                "celsious" => $this->celsius
             );
             // Save the data
             $this->saveFile($data, "/data/weather/conditions.json", true);
@@ -115,31 +104,19 @@ trait Weather {
     function getIcon() {
         return "/images/weather/" . $this->weather['icon'] . ".png";
     }
-    // Figure out if it's day or night (may be needed)
-    function isItDay() {
-        // Get sunrise and sunset unix times
-        $sunrise = $this->weather['sunrise'];
-        $sunset = $this->weather['sunset'];
-        // Get current unix time
-        $date = date("U");
-        // If date matches period when the sun is up, it's day
-        if ($date > $sunrise and $date <= $sunset) {
-            return true;
-        }
-    }
     // Return today's and tomorrow's forecast in human-readable form
     function getTwoDayForecast() {
         if ($this->fileExists("/data/weather/conditions.json")) {
             $conditions = $this->readFile("/data/weather/conditions.json", true);
             // Make the first word capital
-            $today = ucfirst($conditions['day1']);
+            $today = $conditions['day1'];
             $tomorrow = $conditions['day2'];
             // No reason to report differently if they're the same
             if ($today == $tomorrow) {
-                return $today . " tonight and tomorrow morning";
+                return ucfirst($today) . " tonight and tomorrow morning";
             }
             else {
-                return $today . " tonight and " . $tomorrow . " tomorrow morning";
+                return ucfirst($today) . " tonight and " . $tomorrow . " tomorrow morning";
             }
         }
     }

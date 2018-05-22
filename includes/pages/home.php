@@ -1,11 +1,14 @@
 <input id="slider" type="range" min="50" max="150" value="100">
+<form id="refresh">
+    <input id="refresh-btn" type="submit" hidden>
+</form>
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
             <span id="temperature"><?=$this->getTemperature()?></span>
         </div>
         <div class="weather-icon">
-            <img src="<?=$this->getIcon()?>">
+            <img id="weather-icon" src="<?=$this->getIcon()?>">
         </div>
         <div class="weather-status">
             <span id="weather-status"><?=$this->getTwoDayForecast()?></span>

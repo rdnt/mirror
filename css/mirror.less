@@ -39,9 +39,81 @@ main {
     src: local('/fonts/Roboto-Regular'), url('/fonts/Roboto-Regular.ttf') format('truetype');
 }
 
+@keyframes shift-top-left {
+    0% {
+        transform: translate(0);
+    }
+    25% {
+        transform: translate(10px, 10px);
+    }
+    50% {
+        transform: translate(0);
+    }
+    75% {
+        transform: translate(-10px, -10px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+@keyframes shift-top-right {
+    0% {
+        transform: translate(0);
+    }
+    25% {
+        transform: translate(-10px, 10px);
+    }
+    50% {
+        transform: translate(0);
+    }
+    75% {
+        transform: translate(10px, -10px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+@keyframes shift-bottom-left {
+    0% {
+        transform: translate(0);
+    }
+    25% {
+        transform: translate(10px, -10px);
+    }
+    50% {
+        transform: translate(0);
+    }
+    75% {
+        transform: translate(-10px, 10px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
+@keyframes shift-bottom-right {
+    0% {
+        transform: translate(0);
+    }
+    25% {
+        transform: translate(-10px, -10px);
+    }
+    50% {
+        transform: translate(0);
+    }
+    75% {
+        transform: translate(10px, 10px);
+    }
+    100% {
+        transform: translate(0);
+    }
+}
+
 #mirror {
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.4rem;
 
     .segment {
         width: calc(~"50% - 60px");
@@ -158,84 +230,13 @@ main {
 
             .last-updated {
                 position: absolute;
-                bottom: 1.5em;
-                right: 1.5em;
+                bottom: 0;
+                right: 0;
+                padding: 30px;
                 width: 100%;
                 font-family: 'Roboto Light';
                 font-size: 1.3em;
             }
-        }
-    }
-
-    @keyframes shift-top-left {
-        0% {
-            transform: translate(0);
-        }
-        25% {
-            transform: translate(10px, 10px);
-        }
-        50% {
-            transform: translate(0);
-        }
-        75% {
-            transform: translate(-10px, -10px);
-        }
-        100% {
-            transform: translate(0);
-        }
-    }
-
-    @keyframes shift-top-right {
-        0% {
-            transform: translate(0);
-        }
-        25% {
-            transform: translate(-10px, 10px);
-        }
-        50% {
-            transform: translate(0);
-        }
-        75% {
-            transform: translate(10px, -10px);
-        }
-        100% {
-            transform: translate(0);
-        }
-    }
-
-    @keyframes shift-bottom-left {
-        0% {
-            transform: translate(0);
-        }
-        25% {
-            transform: translate(10px, -10px);
-        }
-        50% {
-            transform: translate(0);
-        }
-        75% {
-            transform: translate(-10px, 10px);
-        }
-        100% {
-            transform: translate(0);
-        }
-    }
-
-    @keyframes shift-bottom-right {
-        0% {
-            transform: translate(0);
-        }
-        25% {
-            transform: translate(-10px, -10px);
-        }
-        50% {
-            transform: translate(0);
-        }
-        75% {
-            transform: translate(10px, 10px);
-        }
-        100% {
-            transform: translate(0);
         }
     }
 }

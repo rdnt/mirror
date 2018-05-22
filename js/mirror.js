@@ -10,10 +10,6 @@ $(window).on("load", function() {
     }, 60000);
 });
 
-$("#slider").oninput = function() {
-    $("#mirror").style.setProperty("font-size", (this.value/100) + "em");
-}
-
 function ucfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

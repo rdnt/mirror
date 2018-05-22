@@ -63,16 +63,7 @@ trait Weather {
             );
             // Save the data
             $this->saveFile($data, "/data/weather/conditions.json", true);
-            $this->response("SUCCESS");
-        }
-        else if ($this->key) {
-            $this->response("MISSING_COORDINATES");
-        }
-        else if ($this->coords) {
-            $this->response("MISSING_API_KEY");
-        }
-        else {
-            $this->response("MISSING_REQUIRED_DATA");
+            return $data;
         }
     }
     // Calculate the worst weather for a specific day

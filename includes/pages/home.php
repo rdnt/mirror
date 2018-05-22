@@ -1,7 +1,3 @@
-<input id="slider" type="range" min="50" max="150" value="100">
-<form id="refresh">
-    <input id="refresh-btn" type="submit" hidden>
-</form>
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
@@ -41,3 +37,6 @@
 
     </div>
 </div>
+<form id="refresh">
+    <input id="refresh-btn" type="submit" hidden>
+</form>

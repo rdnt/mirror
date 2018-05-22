@@ -4,18 +4,9 @@ $(window).on("load", function() {
     window.setInterval(function(){
         updateTimeAndDate();
     }, 1000);
-
     window.setInterval(function(){
         $("#refresh-btn").click();
     }, 60000);
-
-    window.setTimeout(function(){
-        $("#mirror").addClass("cursor-less");
-        window.onmousemove = function(e){
-            $("#mirror").removeClass("cursor-less");
-        }
-    }, 1000);
-
 });
 
 function init() {}
@@ -30,10 +21,10 @@ function refreshWeatherData(data) {
         $("#location").html(data['data']['location']);
         $("#weather-icon").attr("src", "/images/weather/" + data['data']['icon'] + ".png");
         $("#temperature").html(data['data']['temperature'] + "°");
-
+        // Figure forecast phrase
+        var phrase;
         var today = data['data']['day1'];
         var tomorrow = data['data']['day2'];
-        var phrase;
         if (today == tomorrow) {
             phrase = ucfirst(today) + " tonight and tomorrow morning";
         }
@@ -42,7 +33,7 @@ function refreshWeatherData(data) {
         }
         $("#weather-status").html(phrase);
         $("#precipitation").html(data['data']['humidity'] + "%");
-
+        // Figure last updated time
         var date = new Date();
         var diff = parseInt(((date.getTime()/1000) - data['data']['last-updated'])/60);
         var minutes = " minutes";
@@ -56,7 +47,6 @@ function refreshWeatherData(data) {
             $("#last-updated").html("Last updated: " + parseInt(diff) + " minutes ago");
         }
     }
-
 }
 
 var day = new Array(7);

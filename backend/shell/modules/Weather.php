@@ -5,12 +5,15 @@ trait Weather {
     function getWeather() {
         return $this->weather;
     }
+    function setWeather($data) {
+        $this->weather = $data;
+    }
     // Get location
     function getLocation() {
         return $this->weather['location'];
     }
     function lastUpdated() {
-        $seconds = date("U") - $this->weather['last-checked'];
+        $seconds = date("U") - $this->weather['last-updated'];
         $minutes = intval($seconds/60);
         if ($minutes == 0) {
             return "Last updated: just now";
@@ -25,13 +28,7 @@ trait Weather {
     }
     // Get temperature in the format specified
     function getTemperature() {
-        if ($this->celsius) {
-            $temperature = $this->weather['temperature'] - 273.15;
-        }
-        else {
-            $temperature = $this->weather['temperature'] * 9/5 - 459.67;
-        }
-        return $temperature . "°";
+        return $this->weather['temperature'] . "°";
     }
     // Get himidity
     function getHumidity() {
@@ -66,9 +63,18 @@ trait Weather {
             // Decode parsed weather data
             $conditions = json_decode($conditions, true);
             $forecast = json_decode($forecast, true);
+
+            $temperature = $conditions['main']['temp'];
+
+            if ($this->celsius) {
+                $temperature = $temperature - 273.15;
+            }
+            else {
+                $temperature = $temperature * 9/5 - 459.67;
+            }
             // Prepare the data
             $data = array(
-                "temperature" => $conditions['main']['temp'],
+                "temperature" => round($temperature, 0, PHP_ROUND_HALF_UP),
                 "icon" => $conditions['weather'][0]['icon'],
                 "location" => $conditions['name'] . ", " . $conditions['sys']['country'],
                 "humidity" => $conditions['main']['humidity'],
@@ -76,8 +82,7 @@ trait Weather {
                 "day2" => $this->calculateWeather(1, $forecast),
                 "sunrise" => $conditions['sys']['sunrise'],
                 "sunset" => $conditions['sys']['sunset'],
-                "celsious" => $this->celsius,
-                "last-checked" => date("U")
+                "last-updated" => date("U")
             );
             // Save the data
             $this->saveFile($data, "/data/weather/conditions.json", true);

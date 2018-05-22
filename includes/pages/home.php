@@ -1,8 +1,8 @@
 <?php
 $date = intval(date("U"));
-$last_checked = $this->getWeather()['last-checked'];
-if ($last_checked + 300 < $date) {
-    $this->weather = $this->updateWeather();
+$last_updated = $this->getWeather()['last-updated'];
+if ($last_updated + 300 < $date) {
+    $this->setWeather($this->updateWeather());
 }
 ?>
 <div id="mirror">

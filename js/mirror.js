@@ -29,16 +29,7 @@ function refreshWeatherData(data) {
     if (data['response'] === "SUCCESS") {
         $("#location").html(data['data']['location']);
         $("#weather-icon").attr("src", "/images/weather/" + data['data']['icon'] + ".png");
-        $("#temperature").html(data['data']['temperature']);
-
-        var temp;
-        if (data['data']['celsious']) {
-            temp = data['data']['temperature']  - 273.15;
-        }
-        else {
-            temp = data['data']['temperature'] * 9/5 - 459.67;
-        }
-        $("#temperature").html(temp + "°");
+        $("#temperature").html(data['data']['temperature'] + "°");
 
         var today = data['data']['day1'];
         var tomorrow = data['data']['day2'];
@@ -53,7 +44,7 @@ function refreshWeatherData(data) {
         $("#precipitation").html(data['data']['humidity'] + "%");
 
         var date = new Date();
-        var diff = parseInt(((date.getTime()/1000) - data['data']['last-checked'])/60);
+        var diff = parseInt(((date.getTime()/1000) - data['data']['last-updated'])/60);
         var minutes = " minutes";
         if (diff == 0) {
             $("#last-updated").html("Last updated: just now");

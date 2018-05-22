@@ -1,3 +1,6 @@
+<form id="refresh">
+    <input id="refresh-btn" type="submit">
+</form>
 <div id="mirror">
     <div class="segment one">
         <div class="temperature">
@@ -34,9 +37,8 @@
 
     </div>
     <div class="segment four">
-
+        <div class="last-updated">
+            <span id="last-updated"><?=$this->lastUpdated()?></span>
+        </div>
     </div>
 </div>
-<form id="refresh">
-    <input id="refresh-btn" type="submit" hidden>
-</form>

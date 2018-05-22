@@ -41,6 +41,19 @@ function refreshWeatherData(data) {
         }
         $("#weather-status").html(phrase);
         $("#precipitation").html(data['data']['humidity'] + "%");
+
+        var date = new Date();
+        var diff = parseInt(((date.getTime()/1000) - data['data']['last-checked'])/60);
+        var minutes = " minutes";
+        if (diff == 0) {
+            $("#last-updated").html("Last updated: just now");
+        }
+        else if (diff == 1) {
+            $("#last-updated").html("Last updated: 1 minute ago");
+        }
+        else {
+            $("#last-updated").html("Last updated: " + parseInt(diff) + " minutes ago");
+        }
     }
 
 }

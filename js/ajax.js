@@ -1,4 +1,4 @@
-var pending = false;
+    var pending = false;
 var pass = false;
 var response = {"response": "FORM_DATA_EMPTY"};
 function asyncFormSubmission(form_id, target_url = null, init, callback, min_delay = 0, error_delay = 0, rapid_error = false) {

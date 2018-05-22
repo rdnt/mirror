@@ -5,6 +5,21 @@ trait Weather {
     function getLocation() {
         return $this->weather['location'];
     }
+
+    function lastUpdated() {
+        $seconds = date("U") - $this->weather['last-checked'];
+        $minutes = intval($seconds/60);
+        if ($minutes == 0) {
+            return "Last updated: just now";
+        }
+        else if ($minutes == 1) {
+            return "Last updated: 1 minute ago";
+        }
+        else {
+            return "Last updated: $minutes minutes ago";
+        }
+
+    }
     // Get temperature in the format specified
     function getTemperature() {
         if ($this->celsius) {

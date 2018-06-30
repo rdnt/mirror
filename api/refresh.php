@@ -1,6 +1,6 @@
 <?php
 // Require the SHT Core
-require_once $_SERVER['DOCUMENT_ROOT']."/backend/core/Core.php";
+require_once $_SERVER['DOCUMENT_ROOT']."/api/core/Core.php";
 // Report weather data
 $date = intval(date("U"));
 $last_updated = $mirror->getWeather()['last-updated'];

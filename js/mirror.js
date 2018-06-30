@@ -1,6 +1,6 @@
 $(window).on("load", function() {
     pass = true;
-    asyncFormSubmission("#refresh", "/backend/refresh", init, refreshWeatherData, 0, 0);
+    asyncFormSubmission("#refresh", "/api/refresh", init, refreshWeatherData, 0, 0);
     window.setInterval(function(){
         updateTimeAndDate();
     }, 1000);

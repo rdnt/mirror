@@ -1,5 +1,5 @@
 <?php
-class Mirror extends Core {
+class Shell extends Core {
     // Include the components
     use AssetPushing;
     use FormHandling;
@@ -47,4 +47,4 @@ class Mirror extends Core {
     }
 }
 // Initialize Shell object
-$mirror = new Mirror;
+$mirror = new Shell;

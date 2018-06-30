@@ -24,6 +24,11 @@ class Mirror extends Core {
         $this->pages = array(
             "/" => ["Mirror", "home", "default"]
         );
+        $this->folders = array(
+            "css",
+            "js",
+            "data"
+        );
         $this->assets = array();
         $this->celsius = true;
         $this->severity = array(
